@@ -18,5 +18,9 @@ public class ResumeController {
     public ResponseEntity<Resume> addResume(@PathVariable int userid, @RequestBody Resume resume){
         return  ResponseEntity.ok(service.addResume(userid,resume));
     }
+    @PutMapping("/{id}/upresume")
+    public  ResponseEntity<Resume> updateResume(@PathVariable int id, @RequestBody Resume resume){
+        return ResponseEntity.ok(service.updateResume(id, resume));
+    }
 
 }

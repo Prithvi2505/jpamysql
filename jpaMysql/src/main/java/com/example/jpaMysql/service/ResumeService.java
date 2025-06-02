@@ -30,6 +30,12 @@ public class ResumeService {
         }
 
     }
+    public Resume updateResume(int resumeId,Resume resume){
+        Resume res = resumeRepo.findById(resumeId).get();
+        res.setContent(resume.getContent());
+        return resumeRepo.save(res);
+    }
+
 
 
 }
