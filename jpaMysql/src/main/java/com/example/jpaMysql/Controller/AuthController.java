@@ -1,10 +1,14 @@
 package com.example.jpaMysql.Controller;
 
+import com.example.jpaMysql.dto.RegisterRequest;
+import com.example.jpaMysql.entity.Auth;
 import com.example.jpaMysql.entity.AuthRequest;
+import com.example.jpaMysql.repository.AuthDetailRepository;
 import com.example.jpaMysql.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,6 +21,11 @@ public class AuthController {
     @Autowired
     JwtUtil jwtUtil;
 
+    @Autowired
+    AuthDetailRepository authDetailRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
     @GetMapping
     public String HealthCheck(){
         return "Checking Auth";
@@ -33,5 +42,18 @@ public class AuthController {
         catch (Exception e){
             throw  e;
         }
+    }
+    @GetMapping("/addAuth")
+    public String healthCheck(){
+        return "Checking this path works";
+
+    }
+    @PostMapping("/addAuth")
+    public void createNewAuth(@RequestBody RegisterRequest request){
+        Auth user = new Auth();
+        user.setUsername(request.getUsername());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(request.getRole());
+        authDetailRepository.save(user);
     }
 }
